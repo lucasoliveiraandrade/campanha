@@ -1,0 +1,10 @@
+spring: 
+  data:
+    mongodb:
+      uri: mongodb://localhost/campanha
+      database: campanha
+
+server:
+  port: 8080
+  servlet:
+    context-path: /prova/
