@@ -1,8 +1,12 @@
-spring: 
+spring:
   data:
     mongodb:
-      uri: mongodb://localhost/campanha
       database: campanha
+      host: localhost
+      port: 27017
+  jpa:
+    hibernate:
+      ddl-auto: update
 
 server:
   port: 8080
