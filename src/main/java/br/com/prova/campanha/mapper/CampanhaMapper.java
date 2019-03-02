@@ -17,8 +17,8 @@ public class CampanhaMapper extends BaseMapper {
 		LocalDate dataInicio = LocalDate.parse(dtoRequest.getDataInicio(), dataFormatter);
 		LocalDate dataTermino = LocalDate.parse(dtoRequest.getDataTermino(), dataFormatter);
 
-		return Campanha.builder().nome(dtoRequest.getNome()).timeCoracao(dtoRequest.getTipoCoracao())
-				.dataInicio(dataInicio).dataTermino(dataTermino).build();
+		return Campanha.builder().id(dtoRequest.getId()).nome(dtoRequest.getNome())
+				.timeCoracao(dtoRequest.getTimeCoracao()).dataInicio(dataInicio).dataTermino(dataTermino).build();
 	}
 
 	public CampanhaDTOResponse toDTO(Campanha campanha) {
