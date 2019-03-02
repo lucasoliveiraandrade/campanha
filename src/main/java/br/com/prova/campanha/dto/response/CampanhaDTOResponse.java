@@ -9,7 +9,8 @@ public class CampanhaDTOResponse {
 
 	private String id;
 	private String nome;
-	private String timeCoracao;
+	private String timeCoracaoId;
 	private String dataInicio;
 	private String dataTermino;
+	private String status;
 }

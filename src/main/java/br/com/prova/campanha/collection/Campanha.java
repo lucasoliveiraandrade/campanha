@@ -7,6 +7,7 @@ import javax.validation.constraints.NotEmpty;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import br.com.prova.campanha.enumeration.StatusCampanha;
 import lombok.Builder;
 import lombok.Data;
 
@@ -22,12 +23,15 @@ public class Campanha {
 	private String nome;
 
 	@NotEmpty
-	private String timeCoracao;
+	private String timeCoracaoId;
 
 	@NotEmpty
 	private LocalDate dataInicio;
 
 	@NotEmpty
 	private LocalDate dataTermino;
+
+	@NotEmpty
+	private StatusCampanha status;
 
 }

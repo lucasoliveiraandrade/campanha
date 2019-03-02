@@ -1,14 +1,21 @@
 package br.com.prova.campanha.service;
 
+import static br.com.prova.campanha.enumeration.StatusCampanha.ATIVADA;
+import static org.springframework.util.CollectionUtils.isEmpty;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import br.com.prova.campanha.collection.Campanha;
 import br.com.prova.campanha.repository.CampanhaRepository;
+import br.com.prova.campanha.validacao.CampanhaValidacao;
 
 @Service
 public class CampanhaService {
@@ -16,34 +23,38 @@ public class CampanhaService {
 	@Autowired
 	private CampanhaRepository repository;
 
-	public String criaCampanha(Campanha campanha) {
-		return repository.insert(campanha).getId();
+	@Autowired
+	private CampanhaValidacao validacao;
+
+	@Autowired
+	private MongoTemplate mongoTemplate;
+
+	public String salvaCampanha(Campanha campanha) {
+		List<Campanha> campanhasDB = buscaCampanhasComMesmaVigencia(campanha);
+
+		if (isEmpty(campanhasDB)) {
+			campanha.setStatus(ATIVADA);
+			return repository.insert(campanha).getId();
+		}
+
+		campanhasDB.stream().forEach(c -> c.setDataTermino(c.getDataTermino().plusDays(1)));
+		repository.saveAll(campanhasDB);
+
+		return salvaCampanhaRecursivamente(campanha);
 	}
 
 	public Campanha buscaPorId(String campanhaId) {
-		if (campanhaId == null) {
-			throw new RuntimeException("Identificador da campanha obrigatório.");
-		}
+		validacao.validaCampanhaId(campanhaId);
+		validacao.validaCampanhaExistente(repository.existsById(campanhaId));
 
-		Campanha campanha = repository.findById(campanhaId)
-				.orElseThrow(() -> new RuntimeException("Campanha não encontrada."));
-
-		if (campanha.getDataTermino().isBefore(LocalDate.now())) {
-			throw new RuntimeException("Campanha com data de vigência vencida.");
-		}
-
+		Campanha campanha = repository.findById(campanhaId).get();
+		validacao.validaCampanhaComVigenciaVencida(campanha);
 		return campanha;
 	}
 
 	public void excluiPorId(String campanhaId) {
-		if (campanhaId == null) {
-			throw new RuntimeException("Identificador da campanha obrigatório.");
-		}
-
-		if (!repository.existsById(campanhaId)) {
-			throw new RuntimeException("Campanha não encontrada.");
-		}
-
+		validacao.validaCampanhaId(campanhaId);
+		validacao.validaCampanhaExistente(repository.existsById(campanhaId));
 		repository.deleteById(campanhaId);
 	}
 
@@ -54,20 +65,34 @@ public class CampanhaService {
 	}
 
 	public void alteraCampanha(Campanha campanha) {
-		if (campanha.getId() == null) {
-			throw new RuntimeException("Identificador da campanha obrigatório.");
-		}
-
-		if (!repository.existsById(campanha.getId())) {
-			throw new RuntimeException("Campanha não encontrada.");
-		}
+		validacao.validaCampanhaId(campanha.getId());
+		validacao.validaCampanhaExistente(repository.existsById(campanha.getId()));
 
 		Campanha campanhaDB = repository.findById(campanha.getId()).get();
 		campanhaDB.setNome(campanha.getNome());
-		campanhaDB.setTimeCoracao(campanha.getTimeCoracao());
+		campanhaDB.setTimeCoracaoId(campanha.getTimeCoracaoId());
 		campanhaDB.setDataInicio(campanha.getDataInicio());
 		campanhaDB.setDataTermino(campanha.getDataTermino());
 
 		repository.save(campanhaDB);
+	}
+
+	private List<Campanha> buscaCampanhasComMesmaVigencia(Campanha campanhaNova) {
+		Query criteria = new Query().addCriteria(Criteria.where("status").is(ATIVADA).and("dataInicio")
+				.gte(campanhaNova.getDataInicio()).and("dataTermino").lte(campanhaNova.getDataTermino()));
+
+		return mongoTemplate.find(criteria, Campanha.class);
+	}
+
+	private String salvaCampanhaRecursivamente(Campanha campanha) {
+		List<Campanha> campanhasDB = repository.findAllByDataTermino(campanha.getDataTermino());
+
+		if (!isEmpty(campanhasDB)) {
+			campanha.setDataTermino(campanha.getDataTermino().plusDays(1));
+			salvaCampanhaRecursivamente(campanha);
+		}
+
+		campanha.setStatus(ATIVADA);
+		return repository.save(campanha).getId();
 	}
 }

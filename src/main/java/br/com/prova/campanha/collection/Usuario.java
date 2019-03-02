@@ -1,5 +1,7 @@
 package br.com.prova.campanha.collection;
 
+import java.util.List;
+
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 
@@ -20,5 +22,8 @@ public class Usuario {
 	@NotEmpty
 	private String nome;
 
+	@NotEmpty
 	private TipoUsuario tipo;
+
+	private List<Campanha> campanhas;
 }

@@ -1,0 +1,161 @@
+{
+	"info": {
+		"_postman_id": "52a0a259-8daa-411a-abb9-ff80c4a7405f",
+		"name": "prova-campanha",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Criar campanha",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"nome\": \"campanha teste\",\n\t\"timeCoracaoId\": \"1\",\n\t\"dataInicio\": \"20/03/2019\",\n\t\"dataTermino\": \"23/03/2019\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/prova/campanhas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prova",
+						"campanhas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar todas campanhas",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/prova/campanhas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prova",
+						"campanhas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar campanha por id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/prova/campanhas/5c7a7d84a4bb45118c32177b",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prova",
+						"campanhas",
+						"5c7a7d84a4bb45118c32177b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Exclui campanha",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/prova/campanhas/5c7a7d84a4bb45118c32177b",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prova",
+						"campanhas",
+						"5c7a7d84a4bb45118c32177b"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alterar campanha",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"5c7a7d84a4bb45118c32177b\",\n    \"nome\": \"campanha teste 2\",\n    \"timeCoracao\": \"time coracao 2\",\n    \"dataInicio\": \"01/01/2020\",\n    \"dataTermino\": \"01/12/2020\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/prova/campanhas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prova",
+						"campanhas"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

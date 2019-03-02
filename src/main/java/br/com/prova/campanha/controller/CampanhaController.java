@@ -37,7 +37,7 @@ public class CampanhaController {
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public String criaNovaCampanha(@RequestBody @Valid CampanhaDTORequest dtoRequest) {
 		Campanha campanha = mapper.toObject(dtoRequest);
-		return service.criaCampanha(campanha);
+		return service.salvaCampanha(campanha);
 	}
 
 	@GetMapping(path = "/{campanhaId}")
@@ -64,5 +64,4 @@ public class CampanhaController {
 		service.alteraCampanha(campanha);
 		return campanha.getId();
 	}
-
 }
