@@ -29,6 +29,11 @@ public class HistoricoControllerIntegrationTest {
 	@Autowired
 	private MockMvc mockMvc;
 
+	/**
+	 * GIVEN a aplicação está em correto funcionamento
+	 * WHEN uma requisição de busca de histórico é feita
+	 * THEN um histórico deve ser retornado corretamente de acordo com a data requerida
+	 */
 	@Test
 	public void deveBuscarHistoricoPorData() throws Exception {
 		mockMvc.perform(post("/prova/campanhas").content(CONTEUDO_POST).contentType(APPLICATION_JSON))

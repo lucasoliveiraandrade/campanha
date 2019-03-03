@@ -36,12 +36,22 @@ public class CampanhaControllerIntegrationTest {
 	@Autowired
 	private MockMvc mockMvc;
 
+	/**
+	 * GIVEN a aplicação está em correto funcionamento
+	 * WHEN uma requisição de criação de uma campanha é feita
+	 * THEN uma nova campanha deve ser criada corretamente
+	 */
 	@Test
 	public void teste001_deveCadastrarNovaCampanha() throws Exception {
 		campanhaId = mockMvc.perform(post("/prova/campanhas").content(CONTEUDO_POST).contentType(APPLICATION_JSON))
 				.andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
 	}
 
+	/**
+	 * GIVEN uma campanha foi previamente criada
+	 * WHEN uma busca é feita pelo seu identificador
+	 * THEN a campanha é retornada com sucesso
+	 */
 	@Test
 	public void teste002_deveBuscarCampanhaPorId() throws Exception {
 		String resposta = mockMvc.perform(get("/prova/campanhas/" + campanhaId).contentType(APPLICATION_JSON))
@@ -51,6 +61,11 @@ public class CampanhaControllerIntegrationTest {
 		assertTrue(resposta.contains(campanhaId));
 	}
 
+	/**
+	 * GIVEN a aplicação está em correto funcionamento
+	 * WHEN uma busca por todas as campnhas é realizada
+	 * THEN todas as campanhas ativas devem ser restornadas com sucesso
+	 */
 	@Test
 	public void teste003_deveBuscarTodasCampanhas() throws Exception {
 		String resposta = mockMvc.perform(get("/prova/campanhas").contentType(APPLICATION_JSON))
@@ -60,6 +75,11 @@ public class CampanhaControllerIntegrationTest {
 		assertTrue(resposta.contains(campanhaId));
 	}
 
+	/**
+	 * GIVEN uma campanha foi previamente criada
+	 * WHEN uma requisição de alteração para esta campanha é feita
+	 * THEN a campanha deve ser alterada corretamente
+	 */
 	@Test
 	public void teste004_deveAlterarCampanhaExistente() throws Exception {
 		String conteudo = String.format(CONTEUDO_PUT, campanhaId);
@@ -80,6 +100,11 @@ public class CampanhaControllerIntegrationTest {
 		assertTrue(resposta.contains("23/4/2019"));
 	}
 
+	/**
+	 * GIVEN uma campanha foi previamente criada
+	 * WHEN uma requisição de exclusão para esta campanha é feita
+	 * THEN a campanha deve ser excluída corretamente
+	 */
 	@Test(expected = Exception.class)
 	public void teste005_deveExcluirCampanha() throws Exception {
 		String resposta = mockMvc.perform(delete("/prova/campanhas/" + campanhaId).contentType(APPLICATION_JSON))
