@@ -21,4 +21,4 @@ Os seguintes padrões de projetos foram utilizados ao longo do andamento do proj
 - REST APIs
 - Injeção de Dependência
 - DTO (Data Transfer Object)
-
+- GIVEN/WHEN/THEN template
