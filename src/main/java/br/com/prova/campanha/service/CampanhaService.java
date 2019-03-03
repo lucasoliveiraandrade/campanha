@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import br.com.prova.campanha.collection.Campanha;
 import br.com.prova.campanha.repository.CampanhaRepository;
@@ -56,6 +57,16 @@ public class CampanhaService {
 		return campanha;
 	}
 
+	public List<Campanha> buscaPorIds(List<String> campanhaIds) {
+		if (CollectionUtils.isEmpty(campanhaIds)) {
+			return new ArrayList<>();
+		}
+
+		List<Campanha> campanhas = new ArrayList<>();
+		repository.findAllById(campanhaIds).forEach(campanhas::add);
+		return campanhas;
+	}
+
 	public void excluiPorId(String campanhaId) {
 		validador.validaCampanhaId(campanhaId);
 		validador.validaCampanhaExistente(repository.existsById(campanhaId));
@@ -64,7 +75,7 @@ public class CampanhaService {
 
 	public List<Campanha> buscaCampanhasValidas() {
 		List<Campanha> campanhas = new ArrayList<>();
-		repository.findByDataTerminoAfter(LocalDate.now()).forEach(campanhas::add);
+		repository.findAllByDataTerminoAfter(LocalDate.now()).forEach(campanhas::add);
 		return campanhas;
 	}
 

@@ -11,9 +11,12 @@ import br.com.prova.campanha.collection.Campanha;
 @Repository
 public interface CampanhaRepository extends MongoRepository<Campanha, String> {
 
-	List<Campanha> findByDataTerminoAfter(LocalDate dataTermino);
+	List<Campanha> findAllByDataTerminoAfter(LocalDate dataTermino);
 
-	List<Campanha> findByStatusAndDataInicioAndDataTerminoBetween(String status, LocalDate dataInicio, LocalDate dataTermino);
+	// List<Campanha> findByStatusAndDataInicioAndDataTerminoBetween(String status,
+	// LocalDate dataInicio, LocalDate dataTermino);
 
 	List<Campanha> findAllByDataTermino(LocalDate dataTermino);
+
+	List<Campanha> findAllByStatusAndDataTerminoGreaterThan(String status, LocalDate data);
 }
