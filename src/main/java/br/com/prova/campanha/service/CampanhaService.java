@@ -24,10 +24,13 @@ public class CampanhaService {
 	private CampanhaRepository repository;
 
 	@Autowired
-	private CampanhaValidacao validacao;
+	private CampanhaValidacao validador;
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
+
+	@Autowired
+	private HistoricoService historicoService;
 
 	public String salvaCampanha(Campanha campanha) {
 		List<Campanha> campanhasDB = buscaCampanhasComMesmaVigencia(campanha);
@@ -39,22 +42,23 @@ public class CampanhaService {
 
 		campanhasDB.stream().forEach(c -> c.setDataTermino(c.getDataTermino().plusDays(1)));
 		repository.saveAll(campanhasDB);
+		historicoService.salvaHistorico(campanhasDB);
 
 		return salvaCampanhaRecursivamente(campanha);
 	}
 
 	public Campanha buscaPorId(String campanhaId) {
-		validacao.validaCampanhaId(campanhaId);
-		validacao.validaCampanhaExistente(repository.existsById(campanhaId));
+		validador.validaCampanhaId(campanhaId);
+		validador.validaCampanhaExistente(repository.existsById(campanhaId));
 
 		Campanha campanha = repository.findById(campanhaId).get();
-		validacao.validaCampanhaComVigenciaVencida(campanha);
+		validador.validaCampanhaComVigenciaVencida(campanha);
 		return campanha;
 	}
 
 	public void excluiPorId(String campanhaId) {
-		validacao.validaCampanhaId(campanhaId);
-		validacao.validaCampanhaExistente(repository.existsById(campanhaId));
+		validador.validaCampanhaId(campanhaId);
+		validador.validaCampanhaExistente(repository.existsById(campanhaId));
 		repository.deleteById(campanhaId);
 	}
 
@@ -65,8 +69,8 @@ public class CampanhaService {
 	}
 
 	public void alteraCampanha(Campanha campanha) {
-		validacao.validaCampanhaId(campanha.getId());
-		validacao.validaCampanhaExistente(repository.existsById(campanha.getId()));
+		validador.validaCampanhaId(campanha.getId());
+		validador.validaCampanhaExistente(repository.existsById(campanha.getId()));
 
 		Campanha campanhaDB = repository.findById(campanha.getId()).get();
 		campanhaDB.setNome(campanha.getNome());
