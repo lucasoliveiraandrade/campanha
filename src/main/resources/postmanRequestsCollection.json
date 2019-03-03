@@ -156,6 +156,42 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Busca historico",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/prova/historicos?data=03/03/2019",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prova",
+						"historicos"
+					],
+					"query": [
+						{
+							"key": "data",
+							"value": "03/03/2019"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

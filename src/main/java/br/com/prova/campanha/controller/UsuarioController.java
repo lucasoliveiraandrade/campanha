@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.prova.campanha.service.UsuarioService;
 
 @RestController
-@RequestMapping("usuarios")
+@RequestMapping("/prova/usuarios")
 public class UsuarioController {
 
 	@Autowired

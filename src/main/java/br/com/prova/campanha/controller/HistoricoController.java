@@ -15,7 +15,7 @@ import br.com.prova.campanha.service.HistoricoService;
 import br.com.prova.campanha.util.DataUtil;
 
 @RestController
-@RequestMapping(value = "historicos")
+@RequestMapping(value = "/prova/historicos")
 public class HistoricoController {
 
 	@Autowired

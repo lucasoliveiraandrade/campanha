@@ -24,7 +24,7 @@ import br.com.prova.campanha.mapper.CampanhaMapper;
 import br.com.prova.campanha.service.CampanhaService;
 
 @RestController
-@RequestMapping("campanhas")
+@RequestMapping("/prova/campanhas")
 public class CampanhaController {
 
 	@Autowired
