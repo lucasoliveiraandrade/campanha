@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.com.prova.campanha.collection.Campanha;
@@ -12,13 +13,17 @@ import br.com.prova.campanha.collection.Campanha.CampanhaBuilder;
 import br.com.prova.campanha.dto.request.CampanhaDTORequest;
 import br.com.prova.campanha.dto.response.CampanhaDTOResponse;
 import br.com.prova.campanha.enumeration.StatusCampanha;
+import br.com.prova.campanha.util.DataUtil;
 
 @Component
-public class CampanhaMapper extends BaseMapper {
+public class CampanhaMapper {
+
+	@Autowired
+	private DataUtil dataUtil;
 
 	public Campanha toObject(CampanhaDTORequest dtoRequest) {
-		LocalDate dataInicio = LocalDate.parse(dtoRequest.getDataInicio(), dataFormatter);
-		LocalDate dataTermino = LocalDate.parse(dtoRequest.getDataTermino(), dataFormatter);
+		LocalDate dataInicio = LocalDate.parse(dtoRequest.getDataInicio(), dataUtil.retornaFormatoDataPadrao());
+		LocalDate dataTermino = LocalDate.parse(dtoRequest.getDataTermino(), dataUtil.retornaFormatoDataPadrao());
 
 		CampanhaBuilder builder = Campanha.builder().id(dtoRequest.getId()).nome(dtoRequest.getNome())
 				.timeCoracaoId(dtoRequest.getTimeCoracaoId()).dataInicio(dataInicio).dataTermino(dataTermino);
@@ -31,8 +36,8 @@ public class CampanhaMapper extends BaseMapper {
 	}
 
 	public CampanhaDTOResponse toDTO(Campanha campanha) {
-		String dataInicio = converteLocalDateParaString(campanha.getDataInicio());
-		String dataTermino = converteLocalDateParaString(campanha.getDataTermino());
+		String dataInicio = dataUtil.converteLocalDateParaString(campanha.getDataInicio());
+		String dataTermino = dataUtil.converteLocalDateParaString(campanha.getDataTermino());
 
 		return CampanhaDTOResponse.builder().id(campanha.getId()).nome(campanha.getNome())
 				.timeCoracaoId(campanha.getTimeCoracaoId()).dataInicio(dataInicio).dataTermino(dataTermino)
