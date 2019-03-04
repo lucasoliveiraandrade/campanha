@@ -47,7 +47,8 @@ public class UsuarioMapper {
 		}
 
 		return UsuarioDTOResponse.builder().id(usuario.getId()).nome(usuario.getNome()).dataNascimento(dataNascimento)
-				.campanhas(campanhas).email(usuario.getEmail()).timeCoracaoId(usuario.getTimeCoracaoId()).build();
+				.campanhas(campanhas).tipo(usuario.getTipo().name()).email(usuario.getEmail())
+				.timeCoracaoId(usuario.getTimeCoracaoId()).build();
 	}
 
 	public List<UsuarioDTOResponse> toDTOs(List<Usuario> usuarios) {

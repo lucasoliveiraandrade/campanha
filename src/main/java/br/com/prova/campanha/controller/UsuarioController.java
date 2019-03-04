@@ -6,6 +6,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import br.com.prova.campanha.collection.Campanha;
 import br.com.prova.campanha.collection.Usuario;
 import br.com.prova.campanha.dto.request.UsuarioDTORequest;
 import br.com.prova.campanha.dto.response.CampanhaDTOResponse;
+import br.com.prova.campanha.dto.response.UsuarioDTOResponse;
 import br.com.prova.campanha.mapper.CampanhaMapper;
 import br.com.prova.campanha.mapper.UsuarioMapper;
 import br.com.prova.campanha.service.UsuarioService;
@@ -44,5 +46,11 @@ public class UsuarioController {
 	public void associaUsuarioCampanha(@PathVariable @NotEmpty String usuarioId,
 			@PathVariable @NotEmpty List<String> campanhasId) {
 		service.associaUsuarioCampanhas(usuarioId, campanhasId);
+	}
+
+	@GetMapping(value = "/{usuarioId}")
+	public UsuarioDTOResponse buscaUsuario(@PathVariable @NotEmpty String usuarioId) {
+		Usuario usuario = service.buscaPorId(usuarioId);
+		return mapper.toDTO(usuario);
 	}
 }

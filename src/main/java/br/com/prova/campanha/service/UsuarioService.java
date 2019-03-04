@@ -11,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 
 import br.com.prova.campanha.collection.Campanha;
 import br.com.prova.campanha.collection.Usuario;
+import br.com.prova.campanha.enumeration.TipoUsuario;
 import br.com.prova.campanha.repository.UsuarioRepository;
 import br.com.prova.campanha.validacao.UsuarioValidacao;
 
@@ -29,6 +30,7 @@ public class UsuarioService {
 	public List<Campanha> salvaUsuario(Usuario usuario) {
 		validador.validaUsuarioJaExistente(repository.existsByEmail(usuario.getEmail()));
 
+		usuario.setTipo(TipoUsuario.CLIENTE);
 		repository.insert(usuario);
 
 		List<Campanha> campanhasValidas = new ArrayList<>();
@@ -55,5 +57,11 @@ public class UsuarioService {
 		usuario.setCampanhas(new ArrayList<Campanha>(campanhasSet));
 
 		repository.save(usuario);
+	}
+
+	public Usuario buscaPorId(String usuarioId) {
+		validador.validaUsuarioId(usuarioId);
+
+		return repository.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
 	}
 }
