@@ -19,4 +19,6 @@ public interface CampanhaRepository extends MongoRepository<Campanha, String> {
 	List<Campanha> findAllByDataTermino(LocalDate dataTermino);
 
 	List<Campanha> findAllByStatusAndDataTerminoGreaterThan(String status, LocalDate data);
+
+	List<Campanha> findAllByTimeCoracaoIdAndDataTerminoAfter(String timeCoracaoId, LocalDate dataTermino);
 }

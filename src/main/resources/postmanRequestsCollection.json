@@ -97,7 +97,7 @@
 			"response": []
 		},
 		{
-			"name": "Exclui campanha",
+			"name": "Exclui rcampanha",
 			"request": {
 				"method": "DELETE",
 				"header": [
@@ -158,7 +158,7 @@
 			"response": []
 		},
 		{
-			"name": "Busca historico",
+			"name": "Buscar historico",
 			"request": {
 				"method": "GET",
 				"header": [
@@ -188,6 +188,100 @@
 							"key": "data",
 							"value": "03/03/2019"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Criar usuario",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"nome\": \"usuario teste\",\n\t\"email\": \"testeteste@teste.com\",\n\t\"dataNascimento\": \"01/01/1990\",\n\t\"timeCoracaoId\": \"1\",\n\t\"campanhas\": [\n\t\t\n\t\t]\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/prova/usuarios",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prova",
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Associar usuario a campanhas",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/prova/usuarios/5c7d2e99b47f1a1b48d9deae/campanhas/5c7d2d63b47f1a1b48d9deaa",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prova",
+						"usuarios",
+						"5c7d2e99b47f1a1b48d9deae",
+						"campanhas",
+						"5c7d2d63b47f1a1b48d9deaa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar usuario",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/prova/usuarios/5c7d38c7b47f1a1cbd056ba2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"prova",
+						"usuarios",
+						"5c7d38c7b47f1a1cbd056ba2"
 					]
 				}
 			},

@@ -1,6 +1,7 @@
 package br.com.prova.campanha.service;
 
 import static br.com.prova.campanha.enumeration.StatusCampanha.ATIVADA;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 import java.time.LocalDate;
@@ -109,5 +110,15 @@ public class CampanhaService {
 
 		campanha.setStatus(ATIVADA);
 		return repository.save(campanha).getId();
+	}
+
+	public List<Campanha> buscaCampanhasValidasPorTimeCoracao(String timeCoracaoId) {
+		if (isBlank(timeCoracaoId)) {
+			return new ArrayList<>();
+		}
+
+		List<Campanha> campanhas = new ArrayList<>();
+		repository.findAllByTimeCoracaoIdAndDataTerminoAfter(timeCoracaoId, LocalDate.now()).forEach(campanhas::add);
+		return campanhas;
 	}
 }

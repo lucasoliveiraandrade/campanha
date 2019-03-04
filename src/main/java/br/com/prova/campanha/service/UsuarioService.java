@@ -36,23 +36,24 @@ public class UsuarioService {
 		List<Campanha> campanhasValidas = new ArrayList<>();
 
 		if (CollectionUtils.isEmpty(usuario.getCampanhas())) {
-			campanhasValidas = campanhaService.buscaCampanhasValidas();
+			campanhasValidas = campanhaService.buscaCampanhasValidasPorTimeCoracao(usuario.getTimeCoracaoId());
 		}
 
 		return campanhasValidas;
 	}
 
-	public void associaUsuarioCampanhas(String usuarioId, List<String> campanhasId) {
+	public void associaUsuarioCampanhas(String usuarioId) {
 		validador.validaUsuarioId(usuarioId);
 
 		Usuario usuario = repository.findById(usuarioId)
 				.orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
 
-		List<Campanha> campanhas = campanhaService.buscaPorIds(campanhasId);
+		List<Campanha> campanhasTimeDoCoracao = campanhaService
+				.buscaCampanhasValidasPorTimeCoracao(usuario.getTimeCoracaoId());
 
 		Set<Campanha> campanhasSet = new HashSet<>();
 		campanhasSet.addAll(usuario.getCampanhas());
-		campanhasSet.addAll(campanhas);
+		campanhasSet.addAll(campanhasTimeDoCoracao);
 
 		usuario.setCampanhas(new ArrayList<Campanha>(campanhasSet));
 

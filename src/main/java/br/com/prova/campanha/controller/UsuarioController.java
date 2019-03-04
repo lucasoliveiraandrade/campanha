@@ -42,10 +42,9 @@ public class UsuarioController {
 		return campanhaMapper.toDTOs(campanhas);
 	}
 
-	@PostMapping(value = "/{usuarioId}/campanhas/{campanhasId}")
-	public void associaUsuarioCampanha(@PathVariable @NotEmpty String usuarioId,
-			@PathVariable @NotEmpty List<String> campanhasId) {
-		service.associaUsuarioCampanhas(usuarioId, campanhasId);
+	@PostMapping(value = "/{usuarioId}/associacao")
+	public void associaUsuarioCampanha(@PathVariable @NotEmpty String usuarioId) {
+		service.associaUsuarioCampanhas(usuarioId);
 	}
 
 	@GetMapping(value = "/{usuarioId}")
