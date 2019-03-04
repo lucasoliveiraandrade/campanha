@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import br.com.prova.campanha.collection.Usuario;
 
 @Repository
-public interface UsuarioRepository extends MongoRepository<Usuario, String>{
+public interface UsuarioRepository extends MongoRepository<Usuario, String> {
 
+	boolean existsByEmail(String email);
 }

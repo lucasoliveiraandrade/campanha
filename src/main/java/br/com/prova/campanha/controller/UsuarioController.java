@@ -3,8 +3,10 @@ package br.com.prova.campanha.controller;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,5 +40,9 @@ public class UsuarioController {
 		return campanhaMapper.toDTOs(campanhas);
 	}
 
-	// faz associação usuario x campanha
+	@PostMapping(value = "/{usuarioId}/campanhas/{campanhasId}")
+	public void associaUsuarioCampanha(@PathVariable @NotEmpty String usuarioId,
+			@PathVariable @NotEmpty List<String> campanhasId) {
+		service.associaUsuarioCampanhas(usuarioId, campanhasId);
+	}
 }
