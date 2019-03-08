@@ -1,0 +1,203 @@
+{
+	"info": {
+		"_postman_id": "52a0a259-8daa-411a-abb9-ff80c4a7405f",
+		"name": "requisicoes-campanha",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Criar campanha",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"nome\": \"campanha teste\",\n\t\"timeCoracaoId\": \"1\",\n\t\"dataInicio\": \"2019-03-20T01:44:50\",\n\t\"dataTermino\": \"2019-03-23T01:44:50\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1/campanhas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"campanhas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar todas campanhas",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1/campanhas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"campanhas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar campanha por id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1/campanhas/5c7d43c3b47f1a1e3f4539de",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"campanhas",
+						"5c7d43c3b47f1a1e3f4539de"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Excluir campanha",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1/campanhas/5c7d43c3b47f1a1e3f4539de",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"campanhas",
+						"5c7d43c3b47f1a1e3f4539de"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Alterar campanha",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"5c7d43c3b47f1a1e3f4539de\",\n    \"nome\": \"campanha teste 2\",\n    \"timeCoracaoId\": \"20\",\n    \"dataInicio\": \"2019-04-20T01:44:50\",\n    \"dataTermino\": \"2019-04-20T01:44:50\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1/campanhas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"campanhas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar historico",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/v1/historicos?data=2019-02-01T01:44:50",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v1",
+						"historicos"
+					],
+					"query": [
+						{
+							"key": "data",
+							"value": "2019-02-01T01:44:50"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

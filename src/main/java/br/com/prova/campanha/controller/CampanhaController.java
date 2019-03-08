@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.prova.campanha.collection.Campanha;
 import br.com.prova.campanha.dto.request.CampanhaDTORequest;
 import br.com.prova.campanha.dto.response.CampanhaDTOResponse;
 import br.com.prova.campanha.mapper.CampanhaMapper;
+import br.com.prova.campanha.model.Campanha;
 import br.com.prova.campanha.service.CampanhaService;
 
 @RestController
@@ -36,8 +36,8 @@ public class CampanhaController {
 
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public String criaNovaCampanha(@RequestBody @Valid CampanhaDTORequest dtoRequest) {
-		Campanha campanha = mapper.toObject(dtoRequest);
+	public String criaNovaCampanha(@RequestBody @Valid CampanhaDTORequest campanhaDTORequest) {
+		Campanha campanha = mapper.toObject(campanhaDTORequest);
 		return service.salvaCampanha(campanha);
 	}
 

@@ -1,27 +1,27 @@
-package br.com.prova.campanha.collection;
+package br.com.prova.campanha.model;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.persistence.Id;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Builder;
 import lombok.Data;
 
-@Document(collection = "historico")
 @Builder
 @Data
+@Document(collection = "historico")
 public class Historico {
 
 	@Id
 	private String id;
 
-	@NotEmpty
+	@NotNull
 	private LocalDate data;
 
-	@NotEmpty
+	@NotNull
 	private List<String> campanhasAlteradas;
 }

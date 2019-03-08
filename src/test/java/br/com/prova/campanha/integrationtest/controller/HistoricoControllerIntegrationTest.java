@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,39 +24,29 @@ import org.springframework.test.web.servlet.MockMvc;
 @TestPropertySource(locations = "classpath:application-integrationtest.yml")
 public class HistoricoControllerIntegrationTest {
 
-	private static final String CONTEUDO_POST = "{ \"nome\": \"campanha teste\", \"timeCoracaoId\": \"1\", \"dataInicio\": \"20/03/2019\", \"dataTermino\": \"23/03/2019\"	}";
+	private static final String CONTEUDO_POST = "{ \"nome\": \"campanha teste\", \"timeCoracaoId\": \"1\", \"dataInicio\": \"2019-03-20T01:44:50\", \"dataTermino\": \"2019-03-23T01:44:50\" }";
 
 	@Autowired
 	private MockMvc mockMvc;
 
 	/**
-	 * GIVEN a aplicação está em correto funcionamento
-	 * WHEN uma requisição de busca de histórico é feita
-	 * THEN um histórico deve ser retornado corretamente de acordo com a data requerida
+	 * GIVEN a aplicação está em correto funcionamento WHEN uma requisição de busca
+	 * de histórico é feita THEN um histórico deve ser retornado corretamente de
+	 * acordo com a data requerida
 	 */
 	@Test
 	public void deveBuscarHistoricoPorData() throws Exception {
-		mockMvc.perform(post("/prova/campanhas").content(CONTEUDO_POST).contentType(APPLICATION_JSON))
+		mockMvc.perform(post("/api/v1/campanhas").content(CONTEUDO_POST).contentType(APPLICATION_JSON))
 				.andExpect(status().isCreated());
 
-		mockMvc.perform(post("/prova/campanhas").content(CONTEUDO_POST).contentType(APPLICATION_JSON))
+		mockMvc.perform(post("/api/v1/campanhas").content(CONTEUDO_POST).contentType(APPLICATION_JSON))
 				.andExpect(status().isCreated());
 
-		String resposta = mockMvc.perform(get(criaURL()).contentType(APPLICATION_JSON)).andExpect(status().isOk())
-				.andReturn().getResponse().getContentAsString();
+		String url = String.format("/api/v1/historicos?data=%s", LocalDateTime.now());
+
+		String resposta = mockMvc.perform(get(url).contentType(APPLICATION_JSON)).andExpect(status().isOk()).andReturn()
+				.getResponse().getContentAsString();
 
 		assertNotNull(resposta);
-	}
-
-	private String criaURL() {
-		LocalDate now = LocalDate.now();
-
-		int diaInt = now.getDayOfMonth();
-		String dia = diaInt < 10 ? "0" + diaInt : "" + diaInt;
-
-		int mesInt = now.getMonthValue();
-		String mes = mesInt < 10 ? "0" + mesInt : "" + mesInt;
-
-		return String.format("/prova/historicos?data=%s/%s/%s", dia, mes, now.getYear());
 	}
 }

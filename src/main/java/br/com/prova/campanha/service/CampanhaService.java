@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import br.com.prova.campanha.collection.Campanha;
+import br.com.prova.campanha.model.Campanha;
 import br.com.prova.campanha.repository.CampanhaRepository;
 import br.com.prova.campanha.validacao.CampanhaValidacao;
 
@@ -24,7 +24,7 @@ import br.com.prova.campanha.validacao.CampanhaValidacao;
 public class CampanhaService {
 
 	@Autowired
-	private CampanhaRepository repository;
+	private CampanhaRepository repositorio;
 
 	@Autowired
 	private CampanhaValidacao validador;
@@ -40,11 +40,11 @@ public class CampanhaService {
 
 		if (isEmpty(campanhasDB)) {
 			campanha.setStatus(ATIVADA);
-			return repository.insert(campanha).getId();
+			return repositorio.insert(campanha).getId();
 		}
 
 		campanhasDB.stream().forEach(c -> c.setDataTermino(c.getDataTermino().plusDays(1)));
-		repository.saveAll(campanhasDB);
+		repositorio.saveAll(campanhasDB);
 		historicoService.salvaHistorico(campanhasDB);
 
 		return salvaCampanhaRecursivamente(campanha);
@@ -52,9 +52,9 @@ public class CampanhaService {
 
 	public Campanha buscaPorId(String campanhaId) {
 		validador.validaCampanhaId(campanhaId);
-		validador.validaCampanhaExistente(repository.existsById(campanhaId));
+		validador.validaExistenciaCampanha(repositorio.existsById(campanhaId));
 
-		Campanha campanha = repository.findById(campanhaId).get();
+		Campanha campanha = repositorio.findById(campanhaId).get();
 		validador.validaCampanhaComVigenciaVencida(campanha);
 		return campanha;
 	}
@@ -65,18 +65,17 @@ public class CampanhaService {
 		}
 
 		List<Campanha> campanhas = new ArrayList<>();
-		repository.findAllById(campanhaIds).forEach(campanhas::add);
+		repositorio.findAllById(campanhaIds).forEach(campanhas::add);
 		return campanhas;
 	}
 
 	public void excluiPorId(String campanhaId) {
 		validador.validaCampanhaId(campanhaId);
-		validador.validaCampanhaExistente(repository.existsById(campanhaId));
-		repository.deleteById(campanhaId);
+		validador.validaExistenciaCampanha(repositorio.existsById(campanhaId));
+		repositorio.deleteById(campanhaId);
 	}
 
 	public List<Campanha> buscaCampanhasValidas(String timeCoracaoId) {
-
 		List<Criteria> criterias = new ArrayList<>();
 
 		criterias.add(Criteria.where("dataTermino").gte(LocalDate.now()));
@@ -92,26 +91,27 @@ public class CampanhaService {
 
 	public void alteraCampanha(Campanha campanha) {
 		validador.validaCampanhaId(campanha.getId());
-		validador.validaCampanhaExistente(repository.existsById(campanha.getId()));
+		validador.validaExistenciaCampanha(repositorio.existsById(campanha.getId()));
 
-		Campanha campanhaDB = repository.findById(campanha.getId()).get();
+		Campanha campanhaDB = repositorio.findById(campanha.getId()).get();
 		campanhaDB.setNome(campanha.getNome());
 		campanhaDB.setTimeCoracaoId(campanha.getTimeCoracaoId());
 		campanhaDB.setDataInicio(campanha.getDataInicio());
 		campanhaDB.setDataTermino(campanha.getDataTermino());
 
-		repository.save(campanhaDB);
+		repositorio.save(campanhaDB);
 	}
 
 	private List<Campanha> buscaCampanhasComMesmaVigencia(Campanha campanhaNova) {
-		Query criteria = new Query().addCriteria(Criteria.where("status").is(ATIVADA).and("dataInicio")
-				.gte(campanhaNova.getDataInicio()).and("dataTermino").lte(campanhaNova.getDataTermino()));
+		Criteria criteria = Criteria.where("status").is(ATIVADA)
+							 .and("dataInicio").gte(campanhaNova.getDataInicio())
+							 .and("dataTermino").lte(campanhaNova.getDataTermino());
 
-		return mongoTemplate.find(criteria, Campanha.class);
+		return mongoTemplate.find(new Query().addCriteria(criteria), Campanha.class);
 	}
 
 	private String salvaCampanhaRecursivamente(Campanha campanha) {
-		List<Campanha> campanhasDB = repository.findAllByDataTermino(campanha.getDataTermino());
+		List<Campanha> campanhasDB = repositorio.findAllByDataTermino(campanha.getDataTermino());
 
 		if (!isEmpty(campanhasDB)) {
 			campanha.setDataTermino(campanha.getDataTermino().plusDays(1));
@@ -119,7 +119,7 @@ public class CampanhaService {
 		}
 
 		campanha.setStatus(ATIVADA);
-		return repository.save(campanha).getId();
+		return repositorio.save(campanha).getId();
 	}
 
 	public List<Campanha> buscaCampanhasValidasPorTimeCoracao(String timeCoracaoId) {
@@ -128,7 +128,7 @@ public class CampanhaService {
 		}
 
 		List<Campanha> campanhas = new ArrayList<>();
-		repository.findAllByTimeCoracaoIdAndDataTerminoAfter(timeCoracaoId, LocalDate.now()).forEach(campanhas::add);
+		repositorio.findAllByTimeCoracaoIdAndDataTerminoAfter(timeCoracaoId, LocalDate.now()).forEach(campanhas::add);
 		return campanhas;
 	}
 }

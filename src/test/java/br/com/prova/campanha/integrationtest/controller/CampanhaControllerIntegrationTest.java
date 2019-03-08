@@ -28,8 +28,9 @@ import org.springframework.test.web.servlet.MockMvc;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CampanhaControllerIntegrationTest {
 
-	private static final String CONTEUDO_POST = "{ \"nome\": \"campanha teste\", \"timeCoracaoId\": \"1\", \"dataInicio\": \"20/03/2019\", \"dataTermino\": \"23/03/2019\"	}";
-	private static final String CONTEUDO_PUT = "{ \"id\":\"%s\", \"nome\": \"campanha teste 2\", \"timeCoracaoId\": \"2\", \"dataInicio\": \"20/04/2019\", \"dataTermino\": \"23/04/2019\" }";
+	private static final String URL_PADRAO = "/api/v1/campanhas/";
+	private static final String CONTEUDO_POST = "{ \"nome\": \"campanha teste\", \"timeCoracaoId\": \"1\", \"dataInicio\": \"2019-03-20T01:44:50\", \"dataTermino\": \"2019-03-23T01:44:50\"	}";
+	private static final String CONTEUDO_PUT = "{ \"id\":\"%s\", \"nome\": \"campanha teste 2\", \"timeCoracaoId\": \"2\", \"dataInicio\": \"2019-04-20T01:44:50\", \"dataTermino\": \"2019-04-23T01:44:50\" }";
 
 	private static String campanhaId;
 
@@ -37,24 +38,24 @@ public class CampanhaControllerIntegrationTest {
 	private MockMvc mockMvc;
 
 	/**
-	 * GIVEN a aplicação está em correto funcionamento
-	 * WHEN uma requisição de criação de uma campanha é feita
+	 * GIVEN a aplicação está em correto funcionamento 
+	 * WHEN uma requisição de criação de uma campanha é feita 
 	 * THEN uma nova campanha deve ser criada corretamente
 	 */
 	@Test
 	public void teste001_deveCadastrarNovaCampanha() throws Exception {
-		campanhaId = mockMvc.perform(post("/prova/campanhas").content(CONTEUDO_POST).contentType(APPLICATION_JSON))
+		campanhaId = mockMvc.perform(post(URL_PADRAO).content(CONTEUDO_POST).contentType(APPLICATION_JSON))
 				.andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
 	}
 
 	/**
-	 * GIVEN uma campanha foi previamente criada
-	 * WHEN uma busca é feita pelo seu identificador
+	 * GIVEN uma campanha foi previamente criada 
+	 * WHEN uma busca é feita pelo seu identificador 
 	 * THEN a campanha é retornada com sucesso
 	 */
 	@Test
 	public void teste002_deveBuscarCampanhaPorId() throws Exception {
-		String resposta = mockMvc.perform(get("/prova/campanhas/" + campanhaId).contentType(APPLICATION_JSON))
+		String resposta = mockMvc.perform(get(URL_PADRAO + campanhaId).contentType(APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
 		assertNotNull(resposta);
@@ -62,13 +63,13 @@ public class CampanhaControllerIntegrationTest {
 	}
 
 	/**
-	 * GIVEN a aplicação está em correto funcionamento
-	 * WHEN uma busca por todas as campnhas é realizada
+	 * GIVEN a aplicação está em correto funcionamento 
+	 * WHEN uma busca por todas as campnhas é realizada 
 	 * THEN todas as campanhas ativas devem ser restornadas com sucesso
 	 */
 	@Test
 	public void teste003_deveBuscarTodasCampanhas() throws Exception {
-		String resposta = mockMvc.perform(get("/prova/campanhas").contentType(APPLICATION_JSON))
+		String resposta = mockMvc.perform(get(URL_PADRAO).contentType(APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
 		assertNotNull(resposta);
@@ -76,44 +77,44 @@ public class CampanhaControllerIntegrationTest {
 	}
 
 	/**
-	 * GIVEN uma campanha foi previamente criada
-	 * WHEN uma requisição de alteração para esta campanha é feita
+	 * GIVEN uma campanha foi previamente criada 
+	 * WHEN uma requisição de alteração para esta campanha é feita 
 	 * THEN a campanha deve ser alterada corretamente
 	 */
 	@Test
 	public void teste004_deveAlterarCampanhaExistente() throws Exception {
 		String conteudo = String.format(CONTEUDO_PUT, campanhaId);
 
-		String resposta = mockMvc.perform(put("/prova/campanhas").contentType(APPLICATION_JSON).content(conteudo))
+		String resposta = mockMvc.perform(put(URL_PADRAO).contentType(APPLICATION_JSON).content(conteudo))
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
 		assertNotNull(resposta);
 		assertTrue(resposta.contains(campanhaId));
 
-		resposta = mockMvc.perform(get("/prova/campanhas/" + campanhaId).contentType(APPLICATION_JSON))
+		resposta = mockMvc.perform(get(URL_PADRAO + campanhaId).contentType(APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
 		assertNotNull(resposta);
 		assertTrue(resposta.contains(campanhaId));
 		assertTrue(resposta.contains("campanha teste 2"));
-		assertTrue(resposta.contains("20/4/2019"));
-		assertTrue(resposta.contains("23/4/2019"));
+		assertTrue(resposta.contains("2019-04-20T01:44:50"));
+		assertTrue(resposta.contains("2019-04-20T01:44:50"));
 	}
 
 	/**
-	 * GIVEN uma campanha foi previamente criada
-	 * WHEN uma requisição de exclusão para esta campanha é feita
+	 * GIVEN uma campanha foi previamente criada 
+	 * WHEN uma requisição de exclusão para esta campanha é feita 
 	 * THEN a campanha deve ser excluída corretamente
 	 */
 	@Test(expected = Exception.class)
 	public void teste005_deveExcluirCampanha() throws Exception {
-		String resposta = mockMvc.perform(delete("/prova/campanhas/" + campanhaId).contentType(APPLICATION_JSON))
+		String resposta = mockMvc.perform(delete(URL_PADRAO + campanhaId).contentType(APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
 		assertNotNull(resposta);
 		assertTrue(resposta.equals(campanhaId));
 
-		resposta = mockMvc.perform(get("/prova/campanhas/" + campanhaId).contentType(APPLICATION_JSON))
+		resposta = mockMvc.perform(get(URL_PADRAO + campanhaId).contentType(APPLICATION_JSON))
 				.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 	}
 }

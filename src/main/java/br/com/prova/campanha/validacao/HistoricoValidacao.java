@@ -1,15 +1,15 @@
 package br.com.prova.campanha.validacao;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Component;
 
-import br.com.prova.campanha.collection.Historico;
+import br.com.prova.campanha.model.Historico;
 
 @Component
 public class HistoricoValidacao {
 
-	public void validaDataHistorico(LocalDate data) {
+	public void validaDataHistorico(LocalDateTime data) {
 		if (data == null) {
 			throw new RuntimeException("Data inválida");
 		}
