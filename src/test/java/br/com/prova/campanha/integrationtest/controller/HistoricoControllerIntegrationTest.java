@@ -30,9 +30,9 @@ public class HistoricoControllerIntegrationTest {
 	private MockMvc mockMvc;
 
 	/**
-	 * GIVEN a aplicação está em correto funcionamento WHEN uma requisição de busca
-	 * de histórico é feita THEN um histórico deve ser retornado corretamente de
-	 * acordo com a data requerida
+	 * GIVEN a aplicação está em correto funcionamento 
+	 * WHEN uma requisição de busca de histórico é feita 
+	 * THEN um histórico deve ser retornado corretamente de acordo com a data requerida
 	 */
 	@Test
 	public void deveBuscarHistoricoPorData() throws Exception {
