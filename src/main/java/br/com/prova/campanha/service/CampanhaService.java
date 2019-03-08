@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -74,10 +75,19 @@ public class CampanhaService {
 		repository.deleteById(campanhaId);
 	}
 
-	public List<Campanha> buscaCampanhasValidas() {
-		List<Campanha> campanhas = new ArrayList<>();
-		repository.findAllByDataTerminoAfter(LocalDate.now()).forEach(campanhas::add);
-		return campanhas;
+	public List<Campanha> buscaCampanhasValidas(String timeCoracaoId) {
+
+		List<Criteria> criterias = new ArrayList<>();
+
+		criterias.add(Criteria.where("dataTermino").gte(LocalDate.now()));
+
+		if (StringUtils.isNotBlank(timeCoracaoId)) {
+			criterias.add(Criteria.where("timeCoracaoId").is(timeCoracaoId));
+		}
+
+		Criteria criteria = new Criteria().andOperator(criterias.toArray(new Criteria[criterias.size()]));
+
+		return mongoTemplate.find(new Query(criteria), Campanha.class);
 	}
 
 	public void alteraCampanha(Campanha campanha) {

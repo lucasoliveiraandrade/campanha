@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +25,7 @@ import br.com.prova.campanha.mapper.CampanhaMapper;
 import br.com.prova.campanha.service.CampanhaService;
 
 @RestController
-@RequestMapping("/prova/campanhas")
+@RequestMapping("/api/v1/campanhas")
 public class CampanhaController {
 
 	@Autowired
@@ -53,8 +54,9 @@ public class CampanhaController {
 	}
 
 	@GetMapping
-	public List<CampanhaDTOResponse> buscaCampanhas() {
-		List<Campanha> campanhas = service.buscaCampanhasValidas();
+	public List<CampanhaDTOResponse> buscaCampanhas(
+			@RequestParam(name = "time-coracao-id", required = false) String timeCoracaoId) {
+		List<Campanha> campanhas = service.buscaCampanhasValidas(timeCoracaoId);
 		return mapper.toDTOs(campanhas);
 	}
 
