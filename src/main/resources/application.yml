@@ -4,12 +4,6 @@ spring:
       database: campanha
       host: localhost
       port: 27017
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
 
 server:
-  port: 8080
-#  servlet:
-#    context-path: /prova/
+  port: 8081
