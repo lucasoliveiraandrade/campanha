@@ -55,15 +55,17 @@ public class CampanhaController {
 
 	@GetMapping
 	public List<CampanhaDTOResponse> buscaCampanhas(
-			@RequestParam(name = "time-coracao-id", required = false) String timeCoracaoId) {
-		List<Campanha> campanhas = service.buscaCampanhasValidas(timeCoracaoId);
+			@RequestParam(name = "time-coracao-id", required = false) String timeCoracaoId,
+			@RequestParam(name = "ids", required = false) List<String> ids) {
+		List<Campanha> campanhas = service.buscaCampanhasValidas(timeCoracaoId, ids);
 		return mapper.toDTOs(campanhas);
 	}
 
 	@PutMapping
-	public String alteraCampanha(@RequestBody @Valid CampanhaDTORequest dtoRequest) {
-		Campanha campanha = mapper.toObject(dtoRequest);
+	public String alteraCampanha(@RequestBody @Valid CampanhaDTORequest campanhaDTORequest) {
+		Campanha campanha = mapper.toObject(campanhaDTORequest);
 		service.alteraCampanha(campanha);
 		return campanha.getId();
 	}
+
 }

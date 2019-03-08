@@ -2,13 +2,13 @@ package br.com.prova.campanha.service;
 
 import static br.com.prova.campanha.enumeration.StatusCampanha.ATIVADA;
 import static org.apache.commons.lang3.StringUtils.isBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -75,13 +75,17 @@ public class CampanhaService {
 		repositorio.deleteById(campanhaId);
 	}
 
-	public List<Campanha> buscaCampanhasValidas(String timeCoracaoId) {
+	public List<Campanha> buscaCampanhasValidas(String timeCoracaoId, List<String> ids) {
 		List<Criteria> criterias = new ArrayList<>();
 
 		criterias.add(Criteria.where("dataTermino").gte(LocalDate.now()));
 
-		if (StringUtils.isNotBlank(timeCoracaoId)) {
+		if (isNotBlank(timeCoracaoId)) {
 			criterias.add(Criteria.where("timeCoracaoId").is(timeCoracaoId));
+		}
+
+		if (!isEmpty(ids)) {
+			criterias.add(Criteria.where("id").in(ids));
 		}
 
 		Criteria criteria = new Criteria().andOperator(criterias.toArray(new Criteria[criterias.size()]));
@@ -103,9 +107,8 @@ public class CampanhaService {
 	}
 
 	private List<Campanha> buscaCampanhasComMesmaVigencia(Campanha campanhaNova) {
-		Criteria criteria = Criteria.where("status").is(ATIVADA)
-							 .and("dataInicio").gte(campanhaNova.getDataInicio())
-							 .and("dataTermino").lte(campanhaNova.getDataTermino());
+		Criteria criteria = Criteria.where("status").is(ATIVADA).and("dataInicio").gte(campanhaNova.getDataInicio())
+				.and("dataTermino").lte(campanhaNova.getDataTermino());
 
 		return mongoTemplate.find(new Query().addCriteria(criteria), Campanha.class);
 	}
