@@ -13,6 +13,7 @@ O desenvolvimento do projeto foi feito utilizando as seguintes tecnologias:
 - NoSQL MongoDB
 - Swagger
 - JUnit
+- Integration Test
 - Postman
 
 ## Padrões
