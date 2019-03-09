@@ -14,7 +14,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import br.com.prova.campanha.model.Campanha;
 import br.com.prova.campanha.repository.CampanhaRepository;
@@ -60,7 +59,7 @@ public class CampanhaService {
 	}
 
 	public List<Campanha> buscaPorIds(List<String> campanhaIds) {
-		if (CollectionUtils.isEmpty(campanhaIds)) {
+		if (isEmpty(campanhaIds)) {
 			return new ArrayList<>();
 		}
 
